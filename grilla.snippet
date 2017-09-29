@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>FiltradoDinamico</Title>
+      <Shortcut>wgrilla</Shortcut>
+      <Description>Crea estructura para controlar una grilla (DGV)</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+    	<Declarations>  
+		    <Literal>  
+		        <ID>dgvGrilla</ID>  
+		        <ToolTip>Reemplazar con el nombre de la grilla a controlar.</ToolTip>  
+		        <Default>dgvProductos</Default>  
+		    </Literal>
+		</Declarations> 
+      <Code Language="VB" Kind="any">
+        <![CDATA[
+            
+    Private Function _EsNumero(ByVal keycode As Integer) As Boolean
+        Return (keycode >= 48 And keycode <= 57) Or (keycode >= 96 And keycode <= 105)
+    End Function
+
+    Private Function _EsControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        Select Case keycode
+            Case Keys.Enter, Keys.Escape, Keys.Right, Keys.Left, Keys.Back
+                valido = True
+            Case Else
+                valido = False
+        End Select
+
+        Return valido
+    End Function
+
+    Private Function _EsDecimal(ByVal keycode As Integer) As Boolean
+        Return (keycode >= 48 And keycode <= 57) Or (keycode >= 96 And keycode <= 105) Or (keycode = 110 Or keycode = 190)
+    End Function
+
+    Private Function _EsNumeroOControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        If _EsNumero(CInt(keycode)) Or _EsControl(keycode) Then
+            valido = True
+        Else
+            valido = False
+        End If
+
+        Return valido
+    End Function
+
+    Private Function _EsDecimalOControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        If _EsDecimal(CInt(keycode)) Or _EsControl(keycode) Then
+            valido = True
+        Else
+            valido = False
+        End If
+
+        Return valido
+    End Function
+
+    Protected Overrides Function ProcessCmdKey(ByRef msg As System.Windows.Forms.Message, ByVal keyData As System.Windows.Forms.Keys) As Boolean
+
+        With $dgvGrilla$
+            If .Focused Or .IsCurrentCellInEditMode Then ' Detectamos los ENTER tanto si solo estan en foco o si estan en edición una celda.
+                .CommitEdit(DataGridViewDataErrorContexts.Commit) ' Guardamos todos los datos que no hayan sido confirmados.
+
+                Dim iCol = .CurrentCell.ColumnIndex
+                Dim iRow = .CurrentCell.RowIndex
+                Dim valor = .CurrentCell.Value
+
+                ' Limitamos los caracteres permitidos para cada una de las columnas.
+                Select Case iCol
+                    Case 1
+                        If Not _EsNumeroOControl(keyData) Then
+                            Return True
+                        End If
+                    Case 4
+                        If Not _EsDecimalOControl(keyData) Then
+                            Return True
+                        End If
+                    Case Else
+
+                End Select
+
+                If msg.WParam.ToInt32() = Keys.Enter Then
+
+                    If valor <> "" Then
+
+                    End If
+
+                    Select Case iCol
+                        Case 4
+                            If iRow = 4 Then
+                                .CurrentCell = .Rows(iRow).Cells(iCol)
+                            Else
+                                .CurrentCell = .Rows(iRow + 1).Cells(0)
+                            End If
+
+                        Case Else
+                            .CurrentCell = .Rows(iRow).Cells(iCol + 1)
+                    End Select
+
+                    Return True
+
+                ElseIf msg.WParam.ToInt32() = Keys.Escape Then
+                    .Rows(iRow).Cells(iCol).Value = ""
+
+                    If iCol = 4 Then
+                        .CurrentCell = .Rows(iRow).Cells(iCol - 1)
+                    Else
+                        .CurrentCell = .Rows(iRow).Cells(iCol + 1)
+                    End If
+
+                    .CurrentCell = .Rows(iRow).Cells(iCol)
+                End If
+            End If
+
+        End With
+        
+        Return MyBase.ProcessCmdKey(msg, keyData)
+    End Function
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

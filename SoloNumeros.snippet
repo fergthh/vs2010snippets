@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>SoloNumeros</Title>
+      <Shortcut>sn</Shortcut>
+      <Description>Crea estructura para permitir numeros enteros</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>  
+        <Literal>  
+            <ID>CampoTxt</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>txtCodigo</Default>  
+        </Literal>
+      </Declarations> 
+      <Code Language="VB" Kind="any">
+		<![CDATA[
+	    Private Sub SoloNumero(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles $CampoTxt$.KeyPress
+	        If Not Char.IsNumber(e.KeyChar) And Not Char.IsControl(e.KeyChar) Then
+	            e.Handled = True
+	        End If
+	    End Sub
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>SoloDecimales</Title>
+      <Shortcut>snd</Shortcut>
+      <Description>Crea estructura para permitir fecha en grilla</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>  
+        <Literal>  
+            <ID>CampoTxt</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>txtCodigo</Default>  
+        </Literal>
+      </Declarations> 
+      <Code Language="VB" Kind="any">
+	  <![CDATA[
+	    Private Sub NumerosConComas(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles $CampoTxt$.KeyPress
+	        If Not Char.IsNumber(e.KeyChar) And Not Char.IsControl(e.KeyChar) And Not (CChar(".")) = e.KeyChar Then
+	            e.Handled = True
+	        End If
+	    End Sub
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

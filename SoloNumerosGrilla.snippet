@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>SoloNumerosGrilla</Title>
+      <Shortcut>sng</Shortcut>
+      <Description>Crea estructura para permitir fecha en grilla</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>  
+        <Literal>  
+            <ID>CampoTxt</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>txtCodigo</Default>  
+        </Literal>  
+        <Literal>  
+            <ID>Celda</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>2</Default>  
+        </Literal>  
+        <Literal>  
+            <ID>CeldaFecha</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>3</Default>  
+        </Literal>  
+      </Declarations> 
+      <Code Language="VB" Kind="any">
+        <![CDATA[
+    'Select Case iCol
+    '    Case 0, 1
+    '        If Not _EsNumeroOControl(keyData) Then
+    '            Return True
+    '        End If
+    '    Case 5
+    '        If Not _EsDecimalOControl(keyData) Then
+    '            Return True
+    '        End If
+    '    Case Else
+
+    'End Select
+
+    Private Function _EsNumero(ByVal keycode As Integer) As Boolean
+        Return (keycode >= 48 And keycode <= 57) Or (keycode >= 96 And keycode <= 105)
+    End Function
+
+    Private Function _EsControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        Select Case keycode
+            Case Keys.Enter, Keys.Escape, Keys.Right, Keys.Left, Keys.Back
+                valido = True
+            Case Else
+                valido = False
+        End Select
+
+        Return valido
+    End Function
+
+    Private Function _EsDecimal(ByVal keycode As Integer) As Boolean
+        Return (keycode >= 48 And keycode <= 57) Or (keycode >= 96 And keycode <= 105) Or (keycode = 110 Or keycode = 190)
+    End Function
+
+    Private Function _EsNumeroOControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        If _EsNumero(CInt(keycode)) Or _EsControl(keycode) Then
+            valido = True
+        Else
+            valido = False
+        End If
+
+        Return valido
+    End Function
+
+    Private Function _EsDecimalOControl(ByVal keycode) As Boolean
+        Dim valido As Boolean = False
+
+        If _EsDecimal(CInt(keycode)) Or _EsControl(keycode) Then
+            valido = True
+        Else
+            valido = False
+        End If
+
+        Return valido
+    End Function
+
+    End Sub
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

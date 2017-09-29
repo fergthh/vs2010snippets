@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>FiltradoDinamico</Title>
+      <Shortcut>filtrado</Shortcut>
+      <Description>Crea estructura para filtrar dinamicamente</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+    	<Declarations>  
+		    <Literal>  
+		        <ID>lstAyuda</ID>  
+		        <ToolTip>Reemplazar con el campo que tenga la lista a filtrar.</ToolTip>  
+		        <Default>lstAyuda</Default>  
+		    </Literal>
+		    <Literal>  
+		        <ID>lstFiltrada</ID>  
+		        <ToolTip>Reemplazar con el campo donde se colocarán los datos filtrados.</ToolTip>  
+		        <Default>lstFiltrada</Default>  
+		    </Literal> 
+		    <Literal>  
+		        <ID>txtAyuda</ID>  
+		        <ToolTip>Reemplazar con el campo por el que se obtiene la informacion para filtrar.</ToolTip>  
+		        <Default>txtAyuda</Default>  
+		    </Literal> 
+		</Declarations> 
+      <Code Language="VB" Kind="any">
+        <![CDATA[
+            ' Rutinas de Filtrado Dinámico.
+		    Private Sub _FiltrarDinamicamente()
+		        Dim origen As ListBox = $lstAyuda$
+		        Dim final As ListBox = $lstFiltrada$
+		        Dim cadena As String = Trim($txtAyuda$.Text)
+
+		        final.Items.Clear()
+
+		        If UCase(Trim(cadena)) <> "" Then
+
+		            For Each item In origen.Items
+
+		                If UCase(item.ToString()).Contains(UCase(Trim(cadena))) Then
+
+		                    final.Items.Add(item)
+
+		                End If
+
+		            Next
+
+		            final.Visible = True
+		            origen.Visible = false
+
+		        Else
+
+		            final.Visible = False
+		            origen.Visible = True
+
+		        End If
+		    End Sub
+
+		    Private Sub $lstFiltrada$_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles $lstFiltrada$.MouseClick
+		        Dim origen As ListBox = $lstAyuda$
+		        Dim filtrado As ListBox = $lstFiltrada$
+		        Dim texto As TextBox = $txtAyuda$
+
+		        If IsNothing(filtrado.SelectedItem) Then : Exit Sub : End If
+
+		        ' Buscamos el texto exacto del item seleccionado y seleccionamos el mismo item segun su indice en la lista de origen.
+		        origen.SelectedItem = filtrado.SelectedItem
+
+		        ' Llamamos al evento que tenga asosiado el control de origen.
+		        $lstAyuda$_Click(Nothing, Nothing)
+
+
+		        ' Sacamos de vista los resultados filtrados.
+		        filtrado.Visible = False
+		        texto.Text = ""
+		    End Sub
+
+		    Private Sub $txtAyuda$_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles $txtAyuda$.TextChanged
+		        _FiltrarDinamicamente()
+		    End Sub
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
