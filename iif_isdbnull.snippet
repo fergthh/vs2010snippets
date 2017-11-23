@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>IIF_ISDBNULL</Title>
+      <Shortcut>wiif</Shortcut>
+      <Description>Crea estructura para detectar DBNULL</Description>
+      <Author>Gaston</Author>
+      <SnippetTypes>
+        <!-- snippet types -->
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>  
+        <Literal>  
+            <ID>CampoTxt1</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>Renglon</Default>  
+
+            <ID>CampoTxt2</ID>  
+            <ToolTip>Reemplazar con el campo correspondiente.</ToolTip>  
+            <Default>Renglon</Default>  
+        </Literal>  
+      </Declarations> 
+      <Code Language="VB" Kind="any">
+        <![CDATA[W$CampoTxt1$ = IIf(IsDBNull(.item($CampoTxt2$)), "0", Trim(.item($CampoTxt2$)))]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
